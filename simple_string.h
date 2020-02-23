@@ -237,7 +237,7 @@ namespace lab {
         SimpleString &operator=(SimpleString original) noexcept;
 
         /*
-         * Access operator
+         * Indexed access operator
          */
 
         wchar_t operator[](size_t index) const noexcept(false);

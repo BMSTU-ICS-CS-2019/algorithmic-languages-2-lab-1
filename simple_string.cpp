@@ -243,6 +243,14 @@ namespace lab {
         return *this;
     }
 
+    /*
+     * Indexed access operator
+     */
+
+    wchar_t SimpleString::operator[](const size_t index) const noexcept(false) {
+        return at(index);
+    }
+
     bool SimpleString::operator==(const SimpleString &other) const noexcept {
         return equals(other);
     }
@@ -265,10 +273,6 @@ namespace lab {
 
     bool SimpleString::operator<=(const SimpleString &other) const noexcept {
         return compare(other) <= 0;
-    }
-
-    wchar_t SimpleString::operator[](const size_t index) const noexcept(false) {
-        return at(index);
     }
 
 #ifdef __cpp_lib_three_way_comparison
