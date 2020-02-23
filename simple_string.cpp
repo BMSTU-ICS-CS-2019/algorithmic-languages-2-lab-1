@@ -314,10 +314,4 @@ namespace lab {
         while (in.peek() != '\n') string.append(wchar_t(in.get()));
         return in;
     }
-
-    /*
-     * Data conversion operators
-     */
-
-
 }
