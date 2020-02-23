@@ -174,7 +174,7 @@ namespace lab {
          * @note this compares string's content thus allowing strings
          * with different internal data (e.g. {@code capacity}) be equal
          */
-        bool equals(const SimpleString &string) const noexcept;
+        [[nodiscard]] bool equals(const SimpleString &string) const noexcept;
 
         /*
          * Modifying public methods
