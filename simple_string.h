@@ -130,36 +130,41 @@ namespace lab {
 
         /**
          * @brief Gets this string's length
+         *
          * @return length of this string
          */
-        [[nodiscard]] size_t length() const;
+        [[nodiscard]] size_t length() const noexcept;
 
         /**
          * @brief Checks if this string is empty
+         *
          * @return {@code true} if this string is empty and {@code} false otherwise
          */
-        [[nodiscard]] bool empty() const;
+        [[nodiscard]] bool empty() const noexcept;
 
         /**
          * @brief Gets an index of the first occurrence of the given wide character
+         *
          * @param character wide character to find
          * @return optional of wide character's index if it was found or an empty optional otherwise
          */
-        [[nodiscard]] std::optional<size_t> index_of(wchar_t character) const;
+        [[nodiscard]] std::optional<size_t> index_of(wchar_t character) const noexcept;
 
         /**
          * @brief Gets an index of the first occurrence of the given character
+         *
          * @param character character to find
          * @return optional of character's iокиndex if it was found or an empty optional otherwise
          */
-        [[nodiscard]] std::optional<size_t> index_of(char character) const;
+        [[nodiscard]] std::optional<size_t> index_of(char character) const noexcept;
 
         /**
          * @brief Gets an index of the first occurrence of the given string
+         *
          * @param string string to find
          * @return optional of string's index if it was found or an empty optional otherwise
          */
-        [[nodiscard]] std::optional<size_t> index_of(const SimpleString &string) const;
+        [[nodiscard]] std::optional<size_t> index_of(const SimpleString &string) const noexcept;
 
         /*
          * Modifying public methods
