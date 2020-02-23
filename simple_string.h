@@ -231,7 +231,17 @@ namespace lab {
          * Comparison operators
          */
 
-        SimpleString &operator==(SimpleString &other);
+        [[nodiscard]] bool operator==(const SimpleString &other) const noexcept;
+
+        [[nodiscard]] bool operator!=(const SimpleString &other) const noexcept;
+
+        [[nodiscard]] bool operator>(const SimpleString &other) const noexcept;
+
+        [[nodiscard]] bool operator>=(const SimpleString &other) const noexcept;
+
+        [[nodiscard]] bool operator<(const SimpleString &other) const noexcept;
+
+        [[nodiscard]] bool operator<=(const SimpleString &other) const noexcept;
 
         /*
          * Non-instance operator overloads

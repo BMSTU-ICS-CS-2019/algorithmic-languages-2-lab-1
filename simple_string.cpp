@@ -235,6 +235,30 @@ namespace lab {
         return *this;
     }
 
+    bool SimpleString::operator==(const SimpleString &other) const noexcept {
+        return equals(other);
+    }
+
+    bool SimpleString::operator!=(const SimpleString &other) const noexcept {
+        return !equals(other);
+    }
+
+    bool SimpleString::operator>(const SimpleString &other) const noexcept {
+        return compare(other) > 0;
+    }
+
+    bool SimpleString::operator>=(const SimpleString &other) const noexcept {
+        return compare(other) >= 0;
+    }
+
+    bool SimpleString::operator<(const SimpleString &other) const noexcept {
+        return compare(other) < 0;
+    }
+
+    bool SimpleString::operator<=(const SimpleString &other) const noexcept {
+        return compare(other) <= 0;
+    }
+
     std::ostream &operator<<(std::ostream &out, const SimpleString &string) {
         for (size_t i = 0; i < string.length_; ++i) out << char(string.buffer_[i]);
 
