@@ -243,6 +243,10 @@ namespace lab {
 
         [[nodiscard]] bool operator<=(const SimpleString &other) const noexcept;
 
+#ifdef __cpp_lib_three_way_comparison
+        [[nodiscard]] bool operator<=>(const SimpleString &other) const noexcept;
+#endif
+
         /*
          * Non-instance operator overloads
          */

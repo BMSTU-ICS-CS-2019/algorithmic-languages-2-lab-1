@@ -259,6 +259,12 @@ namespace lab {
         return compare(other) <= 0;
     }
 
+#ifdef __cpp_lib_three_way_comparison
+    [[nodiscard]] bool operator<=>(const SimpleString &other) const noexcept {
+        return compare(other);
+    }
+#endif
+
     std::ostream &operator<<(std::ostream &out, const SimpleString &string) {
         for (size_t i = 0; i < string.length_; ++i) out << char(string.buffer_[i]);
 
