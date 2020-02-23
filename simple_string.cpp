@@ -118,18 +118,18 @@ namespace lab {
         return index_of(wchar_t(character));
     }
 
-    std::optional<size_t> SimpleString::index_of(const SimpleString &string) const noexcept {
-        if (string.empty()) return 0;
+    std::optional<size_t> SimpleString::index_of(const SimpleString &other) const noexcept {
+        if (other.empty()) return 0;
 
-        const auto string_length = string.length_, length = length_;
-        if (string_length > length) return std::optional<size_t>();
+        const auto length = length_, other_length = other.length_;
+        if (other_length > length) return std::optional<size_t>();
 
-        size_t most_possible_index = length - string_length;
+        size_t most_possible_index = length - other_length;
         for (size_t start_index = 0; start_index < most_possible_index; ++start_index) {
             size_t matched_characters = 0;
-            for (size_t index = start_index, string_index = 0; index < length; ++index, ++string_index) {
-                if (buffer_[index] == string.buffer_[string_index]) {
-                    if (++matched_characters == string_length) return index;
+            for (size_t index = start_index, other_index = 0; index < length; ++index, ++other_index) {
+                if (buffer_[index] == other.buffer_[other_index]) {
+                    if (++matched_characters == other_length) return index;
                 } else break;
             }
         }
@@ -137,13 +137,28 @@ namespace lab {
         return std::optional<size_t>();
     }
 
-    bool SimpleString::equals(const SimpleString &string) const noexcept {
+    bool SimpleString::equals(const SimpleString &other) const noexcept {
         const auto length = length_;
-        if (length != string.length_) return false;
+        if (length != other.length_) return false;
 
-        for (size_t i = 0; i < length; ++i) if (buffer_[i] != string.buffer_[i]) return false;
+        for (size_t i = 0; i < length; ++i) if (buffer_[i] != other.buffer_[i]) return false;
 
         return true;
+    }
+
+    int SimpleString::compare(const SimpleString &other) const noexcept {
+        const auto length = other.length(), other_length = other.length_;
+
+        if (length == other_length) {
+            for (size_t i = 0; i < length; ++i) {
+                const auto character = buffer_[i], other_character = other.buffer_[i];
+                if (character != other_character) return character > other_character ? 1 : -1;
+            }
+
+            return 0;
+        }
+
+        return length > other_length ? 1 : -1;
     }
 
     /*
@@ -162,12 +177,12 @@ namespace lab {
         append(wchar_t(character));
     }
 
-    void SimpleString::append(const SimpleString &string) {
-        const auto length = length_, string_length = string.length_, new_length = length + string_length;
+    void SimpleString::append(const SimpleString &other) {
+        const auto length = length_, other_length = other.length_, new_length = length + other_length;
         ensure_capacity(new_length);
 
-        const auto string_buffer = string.buffer_;
-        std::copy(string_buffer, string_buffer + length, buffer_ + length);
+        const auto other_buffer = other.buffer_;
+        std::copy(other_buffer, other_buffer + length, buffer_ + length);
         length_ = new_length;
     }
 

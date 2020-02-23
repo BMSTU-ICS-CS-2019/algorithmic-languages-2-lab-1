@@ -161,20 +161,36 @@ namespace lab {
         /**
          * @brief Gets an index of the first occurrence of the given string
          *
-         * @param string string to find
+         * @param other string to find
          * @return optional of string's index if it was found or an empty optional otherwise
          */
-        [[nodiscard]] std::optional<size_t> index_of(const SimpleString &string) const noexcept;
+        [[nodiscard]] std::optional<size_t> index_of(const SimpleString &other) const noexcept;
 
         /**
          * @brief Checks is this string is equal to the given.
          *
-         * @param string string to compare with
+         * @param other string to compare with
          * @return {@code true} if the strings are equal and {@code false} otherwise
          * @note this compares string's content thus allowing strings
          * with different internal data (e.g. {@code capacity}) be equal
          */
-        [[nodiscard]] bool equals(const SimpleString &string) const noexcept;
+        [[nodiscard]] bool equals(const SimpleString &other) const noexcept;
+
+        /**
+         * @brief Compares this string with the given one.
+         *
+         * @param other string to compare this one with
+         * @return {@code 0} if the strings are equal,
+         * otherwise if the length is the same
+         * then positive value means that the first non-matching character is greater in this string
+         * and negative values means that the first non-matching character is smaller in this string
+         * otherwise if the length is not the same
+         * then positive value means that this string is shorter
+         * and negative value means that this string is shorter
+         * @note this compares string's content thus allowing strings
+         * with different internal data (e.g. {@code capacity}) be equal
+         */
+        [[nodiscard]] int compare(const SimpleString &other) const noexcept;
 
         /*
          * Modifying public methods
@@ -197,9 +213,9 @@ namespace lab {
         /**
          * @brief Appends a string to this string
          *
-         * @param string string which should be appended to this string
+         * @param other string which should be appended to this string
          */
-        void append(const SimpleString &string);
+        void append(const SimpleString &other);
 
         /*
          * Special operators
@@ -210,6 +226,12 @@ namespace lab {
         SimpleString &operator=(SimpleString &&original) noexcept;
 
         SimpleString &operator=(SimpleString original) noexcept;
+
+        /*
+         * Comparison operators
+         */
+
+        SimpleString &operator==(SimpleString &other);
 
         /*
          * Non-instance operator overloads
