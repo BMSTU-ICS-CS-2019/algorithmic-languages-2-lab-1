@@ -6,6 +6,7 @@
 #include <cstring>
 #include <ostream>
 #include <istream>
+#include <optional>
 
 namespace lab {
 
@@ -138,6 +139,27 @@ namespace lab {
          * @return {@code true} if this string is empty and {@code} false otherwise
          */
         [[nodiscard]] bool empty() const;
+
+        /**
+         * @brief Gets an index of the first occurrence of the given wide character
+         * @param character wide character to find
+         * @return optional of wide character's index if it was found or an empty optional otherwise
+         */
+        [[nodiscard]] std::optional<size_t> index_of(wchar_t character) const;
+
+        /**
+         * @brief Gets an index of the first occurrence of the given character
+         * @param character character to find
+         * @return optional of character's iокиndex if it was found or an empty optional otherwise
+         */
+        [[nodiscard]] std::optional<size_t> index_of(char character) const;
+
+        /**
+         * @brief Gets an index of the first occurrence of the given string
+         * @param string string to find
+         * @return optional of string's index if it was found or an empty optional otherwise
+         */
+        [[nodiscard]] std::optional<size_t> index_of(const SimpleString &string) const;
 
         /*
          * Modifying public methods

@@ -109,6 +109,34 @@ namespace lab {
         return length_ == 0;
     }
 
+    std::optional<size_t> SimpleString::index_of(const wchar_t character) const {
+        for (auto i = 0; i < length_; ++i) if (buffer_[i] == character) return i;
+        return std::optional<size_t>();
+    }
+
+    std::optional<size_t> SimpleString::index_of(char character) const {
+        return index_of(wchar_t(character));
+    }
+
+    std::optional<size_t> SimpleString::index_of(const SimpleString &string) const {
+        if (string.empty()) return 0;
+
+        const auto string_length = string.length_, length = length_;
+        if (string_length > length) return std::optional<size_t>();
+
+        size_t most_possible_index = length - string_length;
+        for (size_t start_index = 0; start_index < most_possible_index; ++start_index) {
+            size_t matched_characters = 0;
+            for (size_t index = start_index, string_index = 0; index < length; ++index, ++string_index) {
+                if (buffer_[index] == string.buffer_[string_index]) {
+                    if (++matched_characters == string_length) return index;
+                } else break;
+            }
+        }
+
+        return std::optional<size_t>();
+    }
+
     /*
      * Modifying public methods
      */
