@@ -137,6 +137,14 @@ namespace lab {
         return std::optional<size_t>();
     }
 
+    wchar_t SimpleString::at(const size_t index) const noexcept(false) {
+        if (index >= length_) [[unlikely]] throw std::out_of_range(
+                "Index " + std::to_string(index) + " exceeds string length"
+        );
+
+        return buffer_[index];
+    }
+
     bool SimpleString::equals(const SimpleString &other) const noexcept {
         const auto length = length_;
         if (length != other.length_) return false;
@@ -257,6 +265,10 @@ namespace lab {
 
     bool SimpleString::operator<=(const SimpleString &other) const noexcept {
         return compare(other) <= 0;
+    }
+
+    wchar_t SimpleString::operator[](const size_t index) const noexcept(false) {
+        return at(index);
     }
 
 #ifdef __cpp_lib_three_way_comparison

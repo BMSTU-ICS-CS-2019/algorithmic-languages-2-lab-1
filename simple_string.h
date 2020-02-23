@@ -167,6 +167,15 @@ namespace lab {
         [[nodiscard]] std::optional<size_t> index_of(const SimpleString &other) const noexcept;
 
         /**
+         * @brief Gets the character at the given index.
+         *
+         * @param index index at which to get the character
+         * @return character at the given index
+         * @throws {@code std::out_of_range} if the index is greater or equal to this string's length
+         */
+        [[nodiscard]] wchar_t at(size_t index) const noexcept(false);
+
+        /**
          * @brief Checks is this string is equal to the given.
          *
          * @param other string to compare with
@@ -226,6 +235,12 @@ namespace lab {
         SimpleString &operator=(SimpleString &&original) noexcept;
 
         SimpleString &operator=(SimpleString original) noexcept;
+
+        /*
+         * Access operator
+         */
+
+        wchar_t operator[](size_t index) const noexcept(false);
 
         /*
          * Comparison operators
