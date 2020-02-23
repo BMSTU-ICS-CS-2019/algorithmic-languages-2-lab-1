@@ -57,6 +57,13 @@ namespace lab {
          */
 
         /**
+         * @brief Checks if the given index is smaller than this string's length otherwise throwin an exception.
+         * @param index index which should be compared with this string's length
+         * @throws {@code std::out_of_range} if the index is greater or equal to this string's length
+         */
+        void check_index(size_t index) const noexcept(false);
+
+        /**
          * @brief Ensures that this string's capacity is not less than given
          *
          * @param required_capacity minimal required capacity

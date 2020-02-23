@@ -46,6 +46,10 @@ namespace lab {
      * Internal methods
      */
 
+    void SimpleString::check_index(const size_t index) const noexcept(false) {
+        if (index >= length_) throw std::out_of_range("Index " + std::to_string(index) + " exceeds string length");
+    }
+
     inline void SimpleString::ensure_capacity(size_t required_capacity) {
         const auto capacity = capacity_;
         if (capacity < required_capacity) resize_to(calculate_new_capacity(capacity, required_capacity));
@@ -138,17 +142,13 @@ namespace lab {
     }
 
     wchar_t SimpleString::at(const size_t index) const noexcept(false) {
-        if (index >= length_) throw std::out_of_range(
-                "Index " + std::to_string(index) + " exceeds string length"
-        );
+        check_index(index);
 
         return buffer_[index];
     }
 
     wchar_t &SimpleString::at(const size_t index) noexcept(false) {
-        if (index >= length_) throw std::out_of_range(
-                "Index " + std::to_string(index) + " exceeds string length"
-        );
+        check_index(index);
 
         return *(buffer_ + index);
     }
