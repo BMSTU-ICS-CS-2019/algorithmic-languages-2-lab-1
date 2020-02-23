@@ -101,24 +101,24 @@ namespace lab {
      * Constant public methods
      */
 
-    size_t SimpleString::length() const {
+    size_t SimpleString::length() const noexcept {
         return length_;
     }
 
-    bool SimpleString::empty() const {
+    bool SimpleString::empty() const noexcept {
         return length_ == 0;
     }
 
-    std::optional<size_t> SimpleString::index_of(const wchar_t character) const {
+    std::optional<size_t> SimpleString::index_of(const wchar_t character) const noexcept {
         for (auto i = 0; i < length_; ++i) if (buffer_[i] == character) return i;
         return std::optional<size_t>();
     }
 
-    std::optional<size_t> SimpleString::index_of(char character) const {
+    std::optional<size_t> SimpleString::index_of(char character) const noexcept {
         return index_of(wchar_t(character));
     }
 
-    std::optional<size_t> SimpleString::index_of(const SimpleString &string) const {
+    std::optional<size_t> SimpleString::index_of(const SimpleString &string) const noexcept {
         if (string.empty()) return 0;
 
         const auto string_length = string.length_, length = length_;
