@@ -113,7 +113,7 @@ namespace lab {
      * Modifying public methods
      */
 
-    void SimpleString::append(wchar_t character) {
+    void SimpleString::append(const wchar_t character) {
         const auto length = length_, new_length = length + 1;
         ensure_capacity(new_length);
 
@@ -121,7 +121,7 @@ namespace lab {
         length_ = new_length;
     }
 
-    void SimpleString::append(char character) {
+    void SimpleString::append(const char character) {
         append(wchar_t(character));
     }
 
