@@ -137,6 +137,15 @@ namespace lab {
         return std::optional<size_t>();
     }
 
+    bool SimpleString::equals(const SimpleString &string) const noexcept {
+        const auto length = length_;
+        if (length != string.length_) return false;
+
+        for (size_t i = 0; i < length; ++i) if (buffer_[i] != string.buffer_[i]) return false;
+
+        return true;
+    }
+
     /*
      * Modifying public methods
      */

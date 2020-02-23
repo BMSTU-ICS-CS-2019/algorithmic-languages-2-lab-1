@@ -166,6 +166,16 @@ namespace lab {
          */
         [[nodiscard]] std::optional<size_t> index_of(const SimpleString &string) const noexcept;
 
+        /**
+         * @brief Checks is this string is equal to the given.
+         *
+         * @param string string to compare with
+         * @return {@code true} if the strings are equal and {@code false} otherwise
+         * @note this compares string's content thus allowing strings
+         * with different internal data (e.g. {@code capacity}) be equal
+         */
+        bool equals(const SimpleString &string) const noexcept;
+
         /*
          * Modifying public methods
          */
