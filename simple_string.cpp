@@ -57,7 +57,7 @@ namespace lab {
             std::copy(buffer_, buffer_ + std::min(length_, new_capacity), new_buffer);
             buffer_ = new_buffer;
 
-            capacity_= new_capacity;
+            capacity_ = new_capacity;
         }
     }
 
