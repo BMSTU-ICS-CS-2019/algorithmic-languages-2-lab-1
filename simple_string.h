@@ -4,6 +4,8 @@
 
 #include <cstddef>
 #include <cstring>
+#include <ostream>
+#include <istream>
 
 namespace lab {
 
@@ -48,6 +50,24 @@ namespace lab {
          * @throws if {@code capacity_} is less than {@code length_}
          */
         explicit SimpleString(size_t length, size_t capacity);
+
+        /*
+         * Internal methods
+         */
+
+        /**
+         * @brief Ensures that this string's capacity is not less than given
+         *
+         * @param required_capacity minimal required capacity
+         */
+        void ensure_capacity(size_t required_capacity);
+
+        /**
+         * @brief Resizes this string so that it has the new capacity
+         *
+         * @param new_capacity capacity of this string which it should have after resizing
+         */
+        void resize_to(size_t new_capacity);
 
     public:
 
@@ -104,6 +124,47 @@ namespace lab {
         ~SimpleString();
 
         /*
+         * Constant public methods
+         */
+
+        /**
+         * @brief Gets this string's length
+         * @return length of this string
+         */
+        [[nodiscard]] size_t length() const;
+
+        /**
+         * @brief Checks if this string is empty
+         * @return {@code true} if this string is empty and {@code} false otherwise
+         */
+        [[nodiscard]] bool empty() const;
+
+        /*
+         * Modifying public methods
+         */
+
+        /**
+         * @brief Appends a wide character to this string
+         *
+         * @param character wide character which should be appended to this string
+         */
+        void append(wchar_t character);
+
+        /**
+         * @brief Appends a character to this string
+         *
+         * @param character character which should be appended to this string
+         */
+        void append(char character);
+
+        /**
+         * @brief Appends a string to this string
+         *
+         * @param string string which should be appended to this string
+         */
+        void append(const SimpleString &string);
+
+        /*
          * Special operators
          */
 
@@ -112,6 +173,18 @@ namespace lab {
         SimpleString &operator=(SimpleString &&original) noexcept;
 
         SimpleString &operator=(SimpleString original) noexcept;
+
+        /*
+         * Non-instance operator overloads
+         */
+
+        friend std::ostream &operator<<(std::ostream &out, const SimpleString &string);
+
+        friend std::wostream &operator<<(std::wostream &out, const SimpleString &string);
+
+        friend std::istream &operator>>(std::istream &in, SimpleString &string);
+
+        friend std::wistream &operator>>(std::wistream &in, SimpleString &string);
     };
 
     /*

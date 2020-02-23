@@ -9,6 +9,26 @@
 namespace lab {
 
     /*
+     * Static functions
+     */
+
+    /**
+     * @brief Calculates the new capacity of the string's buffer based on the current one and the minimal required
+     *
+     * @param current_capacity current capacity of the string's buffer
+     * @param required_capacity minimal required capacity of the string's buffer
+     * @return new capacity of the string's buffer
+     */
+    static inline size_t calculate_new_capacity(size_t current_capacity, size_t required_capacity) {
+        if (current_capacity == SIZE_MAX) throw std::overflow_error("No more space available in this string");
+
+        // multiply the current size by averagely 1.5
+        const auto new_capacity = current_capacity + (current_capacity >> 1u);
+
+        return new_capacity >= required_capacity ? new_capacity : required_capacity;
+    }
+
+    /*
      * Protected constructors
      */
 
@@ -20,6 +40,25 @@ namespace lab {
 
         buffer_ = new wchar_t[capacity_ = capacity];
         length_ = length;
+    }
+
+    /*
+     * Internal methods
+     */
+
+    inline void SimpleString::ensure_capacity(size_t required_capacity) {
+        const auto capacity = capacity_;
+        if (capacity < required_capacity) resize_to(calculate_new_capacity(capacity, required_capacity));
+    }
+
+    void SimpleString::resize_to(const size_t new_capacity) {
+        if (capacity_ != new_capacity) {
+            auto new_buffer = new wchar_t[new_capacity];
+            std::copy(buffer_, buffer_ + std::min(length_, new_capacity), new_buffer);
+            buffer_ = new_buffer;
+
+            capacity_= new_capacity;
+        }
     }
 
     /*
@@ -59,6 +98,43 @@ namespace lab {
     }
 
     /*
+     * Constant public methods
+     */
+
+    size_t SimpleString::length() const {
+        return length_;
+    }
+
+    bool SimpleString::empty() const {
+        return length_ == 0;
+    }
+
+    /*
+     * Modifying public methods
+     */
+
+    void SimpleString::append(wchar_t character) {
+        const auto length = length_, new_length = length + 1;
+        ensure_capacity(new_length);
+
+        buffer_[length] = character;
+        length_ = new_length;
+    }
+
+    void SimpleString::append(char character) {
+        append(wchar_t(character));
+    }
+
+    void SimpleString::append(const SimpleString &string) {
+        const auto length = length_, string_length = string.length_, new_length = length + string_length;
+        ensure_capacity(new_length);
+
+        const auto string_buffer = string.buffer_;
+        std::copy(string_buffer, string_buffer + length, buffer_ + length);
+        length_ = new_length;
+    }
+
+    /*
      * Special operators
      */
 
@@ -80,7 +156,7 @@ namespace lab {
                 capacity_ = length_ = length;
             }
 
-            std::copy(original.buffer_, original.buffer_ + length, length);
+            std::copy(original.buffer_, original.buffer_ + length, buffer_);
         }
 
         return *this;
@@ -105,5 +181,27 @@ namespace lab {
         std::swap(length_, original.length_);
 
         return *this;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const SimpleString &string) {
+        for (size_t i = 0; i < string.length_; ++i) out << char(string.buffer_[i]);
+
+        return out;
+    }
+
+    std::wostream &operator<<(std::wostream &out, const SimpleString &string) {
+        for (size_t i = 0; i < string.length_; ++i) out << string.buffer_[i];
+
+        return out;
+    }
+
+    std::istream &operator>>(std::istream &in, SimpleString &string) {
+        while (in.peek() != '\n') string.append(char(in.get()));
+        return in;
+    }
+
+    std::wistream &operator>>(std::wistream &in, SimpleString &string) {
+        while (in.peek() != '\n') string.append(wchar_t(in.get()));
+        return in;
     }
 }
