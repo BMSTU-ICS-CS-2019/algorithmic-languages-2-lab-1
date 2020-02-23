@@ -138,11 +138,19 @@ namespace lab {
     }
 
     wchar_t SimpleString::at(const size_t index) const noexcept(false) {
-        if (index >= length_) [[unlikely]] throw std::out_of_range(
+        if (index >= length_) throw std::out_of_range(
                 "Index " + std::to_string(index) + " exceeds string length"
         );
 
         return buffer_[index];
+    }
+
+    wchar_t &SimpleString::at(const size_t index) noexcept(false) {
+        if (index >= length_) throw std::out_of_range(
+                "Index " + std::to_string(index) + " exceeds string length"
+        );
+
+        return *(buffer_ + index);
     }
 
     bool SimpleString::equals(const SimpleString &other) const noexcept {
@@ -244,10 +252,14 @@ namespace lab {
     }
 
     /*
-     * Indexed access operator
+     * Indexed access operators
      */
 
     wchar_t SimpleString::operator[](const size_t index) const noexcept(false) {
+        return at(index);
+    }
+
+    wchar_t &SimpleString::operator[](const size_t index) noexcept(false) {
         return at(index);
     }
 
@@ -302,4 +314,10 @@ namespace lab {
         while (in.peek() != '\n') string.append(wchar_t(in.get()));
         return in;
     }
+
+    /*
+     * Data conversion operators
+     */
+
+
 }

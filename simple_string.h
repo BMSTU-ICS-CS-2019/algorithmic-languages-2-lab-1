@@ -176,6 +176,15 @@ namespace lab {
         [[nodiscard]] wchar_t at(size_t index) const noexcept(false);
 
         /**
+         * @brief Gets the reference tp character at the given index.
+         *
+         * @param index index at which to get the character reference
+         * @return character reference at the given index
+         * @throws {@code std::out_of_range} if the index is greater or equal to this string's length
+         */
+        [[nodiscard]] wchar_t &at(size_t index) noexcept(false);
+
+        /**
          * @brief Checks is this string is equal to the given.
          *
          * @param other string to compare with
@@ -237,10 +246,12 @@ namespace lab {
         SimpleString &operator=(SimpleString original) noexcept;
 
         /*
-         * Indexed access operator
+         * Indexed access operators
          */
 
         wchar_t operator[](size_t index) const noexcept(false);
+
+        wchar_t &operator[](size_t index) noexcept(false);
 
         /*
          * Comparison operators
