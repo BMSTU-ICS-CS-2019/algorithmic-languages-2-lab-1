@@ -207,6 +207,12 @@ namespace lab {
         length_ = new_length;
     }
 
+    void SimpleString::set(const size_t index, const wchar_t character) {
+        check_index(index);
+
+        buffer_[index] = character;
+    }
+
     /*
      * Special operators
      */

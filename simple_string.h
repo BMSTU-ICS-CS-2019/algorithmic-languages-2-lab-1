@@ -249,6 +249,14 @@ namespace lab {
          */
         void append(const SimpleString &other);
 
+        /**
+         * @brief Sets the character at the given index.
+         *
+         * @param index index at which to set the character
+         * @param character character to be set at the given index
+         */
+        void set(size_t index, wchar_t character);
+
         /*
          * Special operators
          */
