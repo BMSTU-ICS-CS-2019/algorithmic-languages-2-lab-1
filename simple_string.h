@@ -229,6 +229,11 @@ namespace lab {
          */
 
         /**
+         * @brief Shrinks this string so that its buffer has no extra space.
+         */
+        void shrink();
+
+        /**
          * @brief Appends a wide character to this string
          *
          * @param character wide character which should be appended to this string

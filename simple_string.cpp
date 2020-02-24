@@ -186,6 +186,10 @@ namespace lab {
      * Modifying public methods
      */
 
+    void SimpleString::shrink() {
+        resize_to(length_);
+    }
+
     void SimpleString::append(const wchar_t character) {
         const auto length = length_, new_length = length + 1;
         ensure_capacity(new_length);
