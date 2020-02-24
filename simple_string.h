@@ -99,9 +99,16 @@ namespace lab {
         /**
          * @brief Creates a new string based on the given C-string (0-terminated dynamic {@code char}-array)
          *
-         * @param c_string original string to be copied into the created one
+         * @param wide_c_string original string to be copied into the created one
          */
-        explicit SimpleString(char const *c_string);
+        explicit SimpleString(char const *wide_c_string);
+
+        /**
+         * @brief Creates a new string based on the given wide-C-string (0-terminated dynamic {@code wchar_t}-array)
+         *
+         * @param wide_c_string original string to be copied into the created one
+         */
+        explicit SimpleString(wchar_t const *wide_c_string);
 
         /*
          * Special constructors
@@ -259,6 +266,14 @@ namespace lab {
         wchar_t operator[](size_t index) const noexcept(false);
 
         wchar_t &operator[](size_t index) noexcept(false);
+
+        /*
+         * Modification operators
+         */
+
+        SimpleString operator+(const SimpleString &other) const;
+
+        SimpleString operator*(size_t count) const;
 
         /*
          * Comparison operators

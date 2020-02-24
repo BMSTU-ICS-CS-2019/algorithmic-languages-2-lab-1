@@ -75,9 +75,14 @@ namespace lab {
         for (size_t i = 0; i < length; ++i) buffer_[i] = symbol;
     }
 
-    SimpleString::SimpleString(char const *c_string) : SimpleString(strlen(c_string)) {
+    SimpleString::SimpleString(char const *wide_c_string) : SimpleString(strlen(wide_c_string)) {
         // note: trailing '\0' is not copied
-        mbstowcs(buffer_, c_string, length_);
+        mbstowcs(buffer_, wide_c_string, length_);
+    }
+
+    SimpleString::SimpleString(wchar_t const *wide_c_string) : SimpleString(wcslen(wide_c_string)) {
+        // note: trailing '\0' is not copied
+        std::copy(wide_c_string, wide_c_string + length_, buffer_);
     }
 
     /*
@@ -261,6 +266,45 @@ namespace lab {
 
     wchar_t &SimpleString::operator[](const size_t index) noexcept(false) {
         return at(index);
+    }
+
+    /*
+     * Modification operators
+     */
+
+    SimpleString SimpleString::operator+(const SimpleString &other) const {
+        const auto length = length_, other_length = other.length_;
+
+        if (length == 0) return other_length == 0 ? SimpleString() : other /* explicit copy */;
+        if (other_length == 0) return *this /* explicit copy */;
+
+        SimpleString result(length + other_length);
+        {
+            // reuse `buffer` for `this->buffer_`
+            auto buffer = buffer_, result_buffer = result.buffer_;
+            std::copy(buffer, buffer + length, result_buffer);
+            // reuse `buffer` for `other.buffer_`
+            buffer = other.buffer_;
+            std::copy(buffer, buffer + other_length, result_buffer + length);
+        }
+
+        return result;
+    }
+
+    SimpleString SimpleString::operator*(const size_t count) const {
+        const auto length = length_;
+        if (length == 0) return SimpleString();
+
+        if (count > SIZE_MAX / length) throw std::overflow_error("The resulting string is too big");
+
+        SimpleString result(length * count);
+        {
+            const auto start = buffer_, end = buffer_ + length;
+            auto result_buffer = result.buffer_;
+            for (size_t i = 0; i < count; ++i, result_buffer += length) std::copy(start, end, result_buffer);
+        }
+
+        return result;
     }
 
     bool SimpleString::operator==(const SimpleString &other) const noexcept {
