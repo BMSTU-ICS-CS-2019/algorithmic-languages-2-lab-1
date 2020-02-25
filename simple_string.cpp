@@ -61,6 +61,7 @@ namespace lab {
             const auto new_length = std::min(length_, new_capacity);
 
             std::copy(buffer_, buffer_ + new_length, new_buffer);
+            delete[] buffer_;
             buffer_ = new_buffer;
 
             capacity_ = new_capacity;
