@@ -57,11 +57,14 @@ namespace lab {
 
     void SimpleString::resize_to(const size_t new_capacity) {
         if (capacity_ != new_capacity) {
-            auto new_buffer = new wchar_t[new_capacity];
-            std::copy(buffer_, buffer_ + std::min(length_, new_capacity), new_buffer);
+            const auto new_buffer = new wchar_t[new_capacity];
+            const auto new_length = std::min(length_, new_capacity);
+
+            std::copy(buffer_, buffer_ + new_length, new_buffer);
             buffer_ = new_buffer;
 
             capacity_ = new_capacity;
+            length_ = new_length;
         }
     }
 
