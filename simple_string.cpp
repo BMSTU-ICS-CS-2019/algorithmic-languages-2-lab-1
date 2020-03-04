@@ -173,7 +173,7 @@ namespace lab {
     }
 
     int SimpleString::compare(const SimpleString &other) const noexcept {
-        const auto length = other.length(), other_length = other.length_;
+        const auto length = length_, other_length = other.length_;
 
         if (length == other_length) {
             for (size_t i = 0; i < length; ++i) {
