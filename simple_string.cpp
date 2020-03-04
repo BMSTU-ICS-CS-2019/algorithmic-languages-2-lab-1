@@ -160,7 +160,7 @@ namespace lab {
     wchar_t &SimpleString::at(const size_t index) noexcept(false) {
         check_index(index);
 
-        return *(buffer_ + index);
+        return buffer_[index];
     }
 
     bool SimpleString::equals(const SimpleString &other) const noexcept {
