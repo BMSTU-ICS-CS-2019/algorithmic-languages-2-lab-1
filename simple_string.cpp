@@ -263,14 +263,6 @@ namespace lab {
         return *this;
     }
 
-    SimpleString &SimpleString::operator=(SimpleString original) noexcept {
-        std::swap(buffer_, original.buffer_);
-        std::swap(capacity_, original.capacity_);
-        std::swap(length_, original.length_);
-
-        return *this;
-    }
-
     /*
      * Indexed access operators
      */
