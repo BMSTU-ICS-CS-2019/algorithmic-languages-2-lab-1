@@ -137,10 +137,11 @@ namespace lab {
         const auto length = length_, other_length = other.length_;
         if (other_length > length) return std::optional<size_t>();
 
-        size_t most_possible_index = length - other_length;
-        for (size_t start_index = 0; start_index < most_possible_index; ++start_index) {
+        size_t first_impossible_index = length - other_length + 1;
+        for (size_t start_index = 0; start_index < first_impossible_index; ++start_index) {
             size_t matched_characters = 0;
-            for (size_t index = start_index, other_index = 0; index < length; ++index, ++other_index) {
+            for (size_t index = start_index, other_index = 0; other_index < other_length;
+                    ++index, ++other_index) {
                 if (buffer_[index] == other.buffer_[other_index]) {
                     if (++matched_characters == other_length) return index;
                 } else break;
