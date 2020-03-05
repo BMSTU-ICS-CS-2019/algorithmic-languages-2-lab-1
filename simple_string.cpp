@@ -143,7 +143,7 @@ namespace lab {
             for (size_t index = start_index, other_index = 0; other_index < other_length;
                     ++index, ++other_index) {
                 if (buffer_[index] == other.buffer_[other_index]) {
-                    if (++matched_characters == other_length) return index;
+                    if (++matched_characters == other_length) return start_index;
                 } else break;
             }
         }
@@ -356,13 +356,18 @@ namespace lab {
         return out;
     }
 
+    template<typename T>
+    static bool is_word_terminator(const T character) {
+        return character == EOF || character == '\n' || character == '\r';
+    }
+
     std::istream &operator>>(std::istream &in, SimpleString &string) {
-        while (in.peek() != '\n') string.append(char(in.get()));
+        while (!is_word_terminator(in.peek())) string.append(char(in.get()));
         return in;
     }
 
     std::wistream &operator>>(std::wistream &in, SimpleString &string) {
-        while (in.peek() != '\n') string.append(wchar_t(in.get()));
+        while (!is_word_terminator(in.peek())) string.append(wchar_t(in.get()));
         return in;
     }
 }
