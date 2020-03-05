@@ -57,11 +57,15 @@ namespace lab {
 
     void SimpleString::resize_to(const size_t new_capacity) {
         if (capacity_ != new_capacity) {
-            auto new_buffer = new wchar_t[new_capacity];
-            std::copy(buffer_, buffer_ + std::min(length_, new_capacity), new_buffer);
+            const auto new_buffer = new wchar_t[new_capacity];
+            const auto new_length = std::min(length_, new_capacity);
+
+            std::copy(buffer_, buffer_ + new_length, new_buffer);
+            delete[] buffer_;
             buffer_ = new_buffer;
 
             capacity_ = new_capacity;
+            length_ = new_length;
         }
     }
 
@@ -133,12 +137,13 @@ namespace lab {
         const auto length = length_, other_length = other.length_;
         if (other_length > length) return std::optional<size_t>();
 
-        size_t most_possible_index = length - other_length;
-        for (size_t start_index = 0; start_index < most_possible_index; ++start_index) {
+        size_t first_impossible_index = length - other_length + 1;
+        for (size_t start_index = 0; start_index < first_impossible_index; ++start_index) {
             size_t matched_characters = 0;
-            for (size_t index = start_index, other_index = 0; index < length; ++index, ++other_index) {
+            for (size_t index = start_index, other_index = 0; other_index < other_length;
+                    ++index, ++other_index) {
                 if (buffer_[index] == other.buffer_[other_index]) {
-                    if (++matched_characters == other_length) return index;
+                    if (++matched_characters == other_length) return start_index;
                 } else break;
             }
         }
@@ -155,7 +160,7 @@ namespace lab {
     wchar_t &SimpleString::at(const size_t index) noexcept(false) {
         check_index(index);
 
-        return *(buffer_ + index);
+        return buffer_[index];
     }
 
     bool SimpleString::equals(const SimpleString &other) const noexcept {
@@ -168,7 +173,7 @@ namespace lab {
     }
 
     int SimpleString::compare(const SimpleString &other) const noexcept {
-        const auto length = other.length(), other_length = other.length_;
+        const auto length = length_, other_length = other.length_;
 
         if (length == other_length) {
             for (size_t i = 0; i < length; ++i) {
@@ -254,14 +259,6 @@ namespace lab {
             capacity_ = std::exchange(original.capacity_, 0);
             length_ = std::exchange(original.length_, 0);
         }
-
-        return *this;
-    }
-
-    SimpleString &SimpleString::operator=(SimpleString original) noexcept {
-        std::swap(buffer_, original.buffer_);
-        std::swap(capacity_, original.capacity_);
-        std::swap(length_, original.length_);
 
         return *this;
     }
@@ -359,13 +356,18 @@ namespace lab {
         return out;
     }
 
+    template<typename T>
+    static bool is_word_terminator(const T character) {
+        return character == EOF || character == '\n' || character == '\r';
+    }
+
     std::istream &operator>>(std::istream &in, SimpleString &string) {
-        while (in.peek() != '\n') string.append(char(in.get()));
+        while (!is_word_terminator(in.peek())) string.append(char(in.get()));
         return in;
     }
 
     std::wistream &operator>>(std::wistream &in, SimpleString &string) {
-        while (in.peek() != '\n') string.append(wchar_t(in.get()));
+        while (!is_word_terminator(in.peek())) string.append(wchar_t(in.get()));
         return in;
     }
 }

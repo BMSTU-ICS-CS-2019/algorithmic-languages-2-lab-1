@@ -270,8 +270,6 @@ namespace lab {
 
         SimpleString &operator=(SimpleString &&original) noexcept;
 
-        SimpleString &operator=(SimpleString original) noexcept;
-
         /*
          * Indexed access operators
          */
